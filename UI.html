@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#d4a843">
+    <link rel="manifest" href="/manifest.json">
+    <title>🕌 مولّد ريلز القرآن الكريم</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a2332;
+            --bg-card-hover: #1f2b3d;
+            --border: #2a3a4e;
+            --border-gold: #d4a84333;
+            --gold: #d4a843;
+            --gold-light: #f0d68a;
+            --gold-dark: #b8922f;
+            --text-primary: #e8e0d0;
+            --text-secondary: #8b9ab5;
+            --text-muted: #5a6a80;
+            --green: #4ade80;
+            --red: #f87171;
+            --blue: #60a5fa;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(212, 168, 67, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -50%;
+            left: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.02) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .app-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px 30px;
+            position: relative;
+        }
+
+        .header-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 20px rgba(212, 168, 67, 0.3));
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            font-weight: 300;
+        }
+
+        .bismillah {
+            text-align: center;
+            font-size: 24px;
+            color: var(--gold);
+            padding: 10px 0 20px;
+            opacity: 0.7;
+            font-weight: 300;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--border-gold);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title span {
+            font-size: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            appearance: none;
+            -webkit-appearance: none;
+            direction: rtl;
+        }
+
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238b9ab5' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 14px center;
+            padding-left: 36px;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.1);
+        }
+
+        select option {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 8px;
+        }
+
+        .ayah-range {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #0a0f1a;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 168, 67, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 13px;
+            border-radius: 8px;
+        }
+
+        .progress-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .progress-container.active {
+            display: block;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .progress-status {
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .progress-status.error {
+            color: var(--red);
+        }
+
+        .progress-status.success {
+            color: var(--green);
+        }
+
+        .output-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .output-item:hover {
+            border-color: var(--border-gold);
+        }
+
+        .output-info {
+            flex: 1;
+        }
+
+        .output-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            word-break: break-all;
+        }
+
+        .output-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .output-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .no-outputs {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .status-bar {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            padding: 16px;
+            flex-wrap: wrap;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-dot.ok {
+            background: var(--green);
+            box-shadow: 0 0 8px rgba(74, 222, 128, 0.4);
+        }
+
+        .status-dot.error {
+            background: var(--red);
+            box-shadow: 0 0 8px rgba(248, 113, 113, 0.4);
+        }
+
+        .status-dot.warn {
+            background: #fbbf24;
+            box-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .config-section {
+            margin-bottom: 20px;
+        }
+
+        .config-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .config-row input[type="text"] {
+            flex: 1;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-family: 'Consolas', monospace;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .config-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .config-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .config-badge.ok {
+            background: rgba(74, 222, 128, 0.1);
+            color: var(--green);
+        }
+
+        .config-badge.error {
+            background: rgba(248, 113, 113, 0.1);
+            color: var(--red);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .footer a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .preview-text {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 16px;
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--gold-light);
+            line-height: 2;
+        }
+
+        .color-picker-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .color-picker-row input[type="color"] {
+            width: 48px;
+            height: 40px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            cursor: pointer;
+            padding: 2px;
+            flex-shrink: 0;
+        }
+
+        .color-picker-row input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 2px;
+        }
+
+        .color-picker-row input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 4px;
+        }
+
+        .color-picker-row .color-label {
+            flex: 1;
+        }
+
+        .bg-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .bg-item {
+            position: relative;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            aspect-ratio: 9/16;
+        }
+
+        .bg-item:hover {
+            border-color: var(--gold);
+        }
+
+        .bg-item.selected {
+            border-color: var(--gold);
+            box-shadow: 0 0 12px rgba(212, 168, 67, 0.3);
+        }
+
+        .bg-item.selected::after {
+            content: '\2713';
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: var(--gold);
+            color: #0a0f1a;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .bg-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .bg-item .bg-type-badge {
+            position: absolute;
+            bottom: 4px;
+            left: 4px;
+            background: rgba(0,0,0,0.7);
+            color: var(--text-primary);
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .bg-item .bg-delete-btn {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            background: rgba(248, 113, 113, 0.85);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .bg-item:hover .bg-delete-btn {
+            opacity: 1;
+        }
+
+        .bg-none-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-muted);
+        }
+
+        .upload-area:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .upload-area.dragging {
+            border-color: var(--gold);
+            background: rgba(212, 168, 67, 0.05);
+        }
+
+        .upload-progress {
+            margin-top: 12px;
+        }
+
+        .upload-progress .progress-bar-bg {
+            height: 6px;
+            margin-bottom: 6px;
+        }
+
+        .upload-error {
+            background: rgba(248, 113, 113, 0.1);
+            border: 1px solid rgba(248, 113, 113, 0.2);
+            color: var(--red);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .bg-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: var(--text-muted);
+            gap: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .app-container {
+                padding: 12px;
+            }
+            .header h1 {
+                font-size: 24px;
+            }
+            .card {
+                padding: 18px;
+            }
+            .status-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+            .bg-grid {
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <div class="header-icon">🕌</div>
+            <h1>مولّد ريلز القرآن الكريم</h1>
+            <p>أنشئ فيديوهات قصيرة لآيات من القرآن الكريم مع تلاوة وخلفية طبيعة</p>
+        </div>
+
+        <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+
+        <!-- Tools Status -->
+        <div class="card" id="toolsCard">
+            <div class="card-title"><span>⚙️</span> حالة الأدوات</div>
+            <div class="status-bar" id="toolsStatus">
+                <div class="status-item">
+                    <div class="status-dot" id="ffmpegDot"></div>
+                    <span id="ffmpegStatus">جاري الفحص...</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot" id="pillowDot"></div>
+                    <span id="pillowStatus">جاري الفحص...</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot" id="videosDot"></div>
+                    <span id="videosStatus">جاري الفحص...</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot" id="moderationDot"></div>
+                    <span id="moderationStatus">جاري الفحص...</span>
+                </div>
+            </div>
+
+            <div style="margin-top:16px; padding:14px; background:rgba(96,165,250,0.05); border:1px solid rgba(96,165,250,0.15); border-radius:8px; font-size:13px; color:var(--text-secondary); line-height:1.8;">
+                💡 <strong>ملاحظات:</strong><br>
+                • FFmpeg يُحمّل تلقائياً عند أول تشغيل (~30MB)<br>
+                • ضع فيديوهات خلفية (MP4) في مجلد <code style="color:var(--blue);">video/</code><br>
+                • بدون فيديو خلفية → يُنشأ فيديو بخلفية داكنة أنيقة<br>
+                • 🛡️ نظام المراجعة الإسلامية يراقب المحتوى المرفوع
+            </div>
+        </div>
+
+        <!-- Customize Appearance -->
+        <div class="card">
+            <div class="card-title"><span>🎨</span> تخصيص المظهر</div>
+
+            <div class="form-group">
+                <label>🔤 خط القرآن</label>
+                <select id="fontSelect">
+                    <option value="">الخط الافتراضي</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>🎨 لون نص الآية</label>
+                <div class="color-picker-row">
+                    <input type="color" id="textColor" value="#ffffff">
+                    <div class="color-label">
+                        <span id="textColorHex">#ffffff</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>🌐 لون نص الترجمة</label>
+                <div class="color-picker-row">
+                    <input type="color" id="translationColor" value="#f0d68a">
+                    <div class="color-label">
+                        <span id="translationColorHex">#f0d68a</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>🖼️ لون الخلفية</label>
+                <div class="color-picker-row">
+                    <input type="color" id="bgColor" value="#0a0f1a">
+                    <div class="color-label">
+                        <span id="bgColorHex">#0a0f1a</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Backgrounds -->
+        <div class="card">
+            <div class="card-title"><span>🖼️</span> الخلفيات</div>
+
+            <div id="bgGrid" class="bg-grid">
+                <div class="bg-loading">
+                    <span class="spinner"></span>
+                    جاري تحميل الخلفيات...
+                </div>
+            </div>
+
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('bgFileInput').click()">
+                <div style="font-size:28px; margin-bottom:8px;">📤</div>
+                <div style="font-size:14px; font-weight:500;">اضغط أو اسحب ملف لرفع خلفية</div>
+                <div style="font-size:12px; margin-top:4px; opacity:0.7;">صور (JPG, PNG) أو فيديوهات (MP4)</div>
+                <input type="file" id="bgFileInput" accept="image/*,video/mp4" style="display:none" onchange="uploadBackground(this.files)">
+            </div>
+
+            <div class="upload-progress" id="uploadProgress" style="display:none;">
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="uploadProgressBar"></div>
+                </div>
+                <div style="font-size:12px; color:var(--text-secondary); text-align:center;" id="uploadProgressText">جاري الرفع...</div>
+            </div>
+
+            <div id="uploadError" style="display:none;"></div>
+        </div>
+
+        <!-- Settings -->
+        <div class="card">
+            <div class="card-title"><span>🎬</span> إعدادات الفيديو</div>
+            
+            <div class="form-group">
+                <label>🎤 اختر القارئ</label>
+                <select id="reciterSelect">
+                    <option value="">جاري التحميل...</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>📖 اختر السورة</label>
+                <select id="surahSelect">
+                    <option value="">جاري التحميل...</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>🔢 نطاق الآيات</label>
+                <div class="ayah-range">
+                    <div>
+                        <input type="number" id="ayahFrom" min="1" value="1" placeholder="من آية">
+                    </div>
+                    <div>
+                        <input type="number" id="ayahTo" min="1" value="1" placeholder="إلى آية">
+                    </div>
+                </div>
+                <div style="text-align:center; margin-top:8px;">
+                    <button class="btn btn-secondary btn-small" onclick="setRange('first10')">أول 10 آيات</button>
+                    <button class="btn btn-secondary btn-small" onclick="setRange('all')">كل الآيات</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>🌐 الترجمة</label>
+                <select id="translationSelect">
+                    <option value="">بدون ترجمة</option>
+                </select>
+            </div>
+
+            <button class="btn btn-primary" id="generateBtn" onclick="generateVideo()">
+                🎬 إنشاء الفيديو
+            </button>
+
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progressBar"></div>
+                </div>
+                <div class="progress-status" id="progressStatus">جاري التحضير...</div>
+            </div>
+        </div>
+
+        <!-- Outputs -->
+        <div class="card">
+            <div class="card-title"><span>📁</span> الفيديوهات المنشأة</div>
+            <div id="outputsList">
+                <div class="no-outputs">لا توجد فيديوهات بعد. قم بإنشاء أول فيديو! 🎬</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            صُنع من قبل خالد جمعه<br>
+            <span style="font-size:12px; opacity:0.6;">لمحبي القرآن الكريم</span>
+        </div>
+    </div>
+
+    <script>
+        var surahs = [];
+        var reciters = [];
+        var currentJobId = null;
+        var statusInterval = null;
+        var selectedBackground = '';
+        var backgrounds = [];
+
+        async function init() {
+            await checkTools();
+            await loadReciters();
+            await loadSurahs();
+            await loadTranslations();
+            await loadOutputs();
+            await loadFonts();
+            await loadBackgrounds();
+            setupColorPickers();
+            setupDragDrop();
+        }
+
+        async function checkTools() {
+            try {
+                var resp = await fetch('/api/tools-check');
+                var data = await resp.json();
+
+                setDot('ffmpegDot', data.ffmpeg ? 'ok' : 'error');
+                document.getElementById('ffmpegStatus').textContent =
+                    data.ffmpeg ? 'FFmpeg ✅' : 'FFmpeg ❌';
+
+                setDot('pillowDot', data.pillow ? 'ok' : 'error');
+                document.getElementById('pillowStatus').textContent =
+                    data.pillow ? 'Pillow ✅' : 'Pillow ❌';
+
+                var videoCount = data.background_videos || 0;
+                if (videoCount > 0) {
+                    setDot('videosDot', 'ok');
+                    document.getElementById('videosStatus').textContent =
+                        videoCount + ' فيديو خلفية ✅';
+                } else {
+                    setDot('videosDot', 'warn');
+                    document.getElementById('videosStatus').textContent =
+                        'لا يوجد فيديو خلفية ⚠️';
+                }
+
+                if (data.moderation_enabled) {
+                    setDot('moderationDot', 'ok');
+                    document.getElementById('moderationStatus').textContent =
+                        'مراجعة إسلامية 🛡️';
+                } else {
+                    setDot('moderationDot', 'warn');
+                    document.getElementById('moderationStatus').textContent =
+                        'المراجعة غير مفعلة ⚠️';
+                }
+            } catch (e) {
+                console.error('Tools check failed:', e);
+            }
+        }
+
+        function setDot(id, type) {
+            document.getElementById(id).className = 'status-dot ' + type;
+        }
+
+        async function loadFonts() {
+            try {
+                var resp = await fetch('/api/fonts');
+                var fonts = await resp.json();
+
+                var select = document.getElementById('fontSelect');
+                select.innerHTML = '<option value="">الخط الافتراضي</option>';
+
+                fonts.forEach(function(f) {
+                    var opt = document.createElement('option');
+                    opt.value = f.filename || f;
+                    opt.textContent = f.name || f.filename || f;
+                    select.appendChild(opt);
+                });
+            } catch (e) {
+                console.error('Failed to load fonts:', e);
+                document.getElementById('fontSelect').innerHTML =
+                    '<option value="">الخط الافتراضي</option>';
+            }
+        }
+
+        async function loadBackgrounds() {
+            try {
+                var resp = await fetch('/api/backgrounds');
+                backgrounds = await resp.json();
+                renderBackgrounds();
+            } catch (e) {
+                console.error('Failed to load backgrounds:', e);
+                document.getElementById('bgGrid').innerHTML =
+                    '<div class="no-outputs">فشل تحميل الخلفيات</div>';
+            }
+        }
+
+        function renderBackgrounds() {
+            var grid = document.getElementById('bgGrid');
+
+            var html = '<div class="bg-item bg-none-item ' +
+                (selectedBackground === '' ? 'selected' : '') +
+                '" onclick="selectBackground(\'\')">بدون خلفية</div>';
+
+            backgrounds.forEach(function(bg) {
+                var filename = bg.filename || bg;
+                var isVideo = filename.toLowerCase().endsWith('.mp4') || filename.toLowerCase().endsWith('.webm');
+                var isSelected = selectedBackground === filename;
+                var safeName = escapeHtml(filename);
+
+                html += '<div class="bg-item ' + (isSelected ? 'selected' : '') +
+                    '" onclick="selectBackground(\'' + safeName + '\')">' +
+                    '<img src="/api/background-thumb/' + encodeURIComponent(filename) + '"' +
+                    ' alt="' + safeName + '"' +
+                    ' onerror="this.style.display=\'none\'">' +
+                    '<span class="bg-type-badge">' + (isVideo ? '🎬 فيديو' : '🖼️ صورة') + '</span>' +
+                    '<button class="bg-delete-btn" onclick="event.stopPropagation(); deleteBackground(\'' + safeName + '\')" title="حذف">✕</button>' +
+                    '</div>';
+            });
+
+            grid.innerHTML = html;
+        }
+
+        function selectBackground(filename) {
+            selectedBackground = filename;
+            renderBackgrounds();
+        }
+
+        async function deleteBackground(filename) {
+            if (!confirm('هل تريد حذف الخلفية "' + filename + '"؟')) return;
+
+            try {
+                var resp = await fetch('/api/backgrounds/' + encodeURIComponent(filename), { method: 'DELETE' });
+                if (resp.ok) {
+                    if (selectedBackground === filename) {
+                        selectedBackground = '';
+                    }
+                    await loadBackgrounds();
+                } else {
+                    alert('فشل حذف الخلفية');
+                }
+            } catch (e) {
+                alert('فشل حذف الخلفية');
+            }
+        }
+
+        async function uploadBackground(files) {
+            if (!files || files.length === 0) return;
+
+            var file = files[0];
+            var formData = new FormData();
+            formData.append('file', file);
+
+            var progressDiv = document.getElementById('uploadProgress');
+            var progressBar = document.getElementById('uploadProgressBar');
+            var progressText = document.getElementById('uploadProgressText');
+            var errorDiv = document.getElementById('uploadError');
+
+            errorDiv.style.display = 'none';
+            progressDiv.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressText.textContent = 'جاري رفع "' + file.name + '"...';
+
+            try {
+                var xhr = new XMLHttpRequest();
+
+                xhr.upload.addEventListener('progress', function(e) {
+                    if (e.lengthComputable) {
+                        var pct = Math.round((e.loaded / e.total) * 100);
+                        progressBar.style.width = pct + '%';
+                        progressText.textContent = 'جاري الرفع... ' + pct + '%';
+                    }
+                });
+
+                var promise = new Promise(function(resolve, reject) {
+                    xhr.onload = function() {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            resolve(JSON.parse(xhr.responseText));
+                        } else {
+                            try {
+                                var errData = JSON.parse(xhr.responseText);
+                                reject(errData);
+                            } catch {
+                                reject({ error: 'فشل الرفع' });
+                            }
+                        }
+                    };
+                    xhr.onerror = function() { reject({ error: 'خطأ في الاتصال' }); };
+                });
+
+                xhr.open('POST', '/api/upload-background');
+                xhr.send(formData);
+
+                var result = await promise;
+
+                progressDiv.style.display = 'none';
+                await loadBackgrounds();
+            } catch (err) {
+                progressDiv.style.display = 'none';
+
+                var msg = err.error || err.message || 'فشل رفع الملف';
+                if (err.moderation_blocked) {
+                    msg = '🛡️ تم رفض الملف بواسطة نظام المراجعة الإسلامية: ' + (err.reason || 'المحتوى لا يتناسب مع المعايير الإسلامية');
+                }
+
+                errorDiv.innerHTML = msg;
+                errorDiv.className = 'upload-error';
+                errorDiv.style.display = 'block';
+            }
+
+            document.getElementById('bgFileInput').value = '';
+        }
+
+        function setupDragDrop() {
+            var area = document.getElementById('uploadArea');
+
+            area.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                area.classList.add('dragging');
+            });
+
+            area.addEventListener('dragleave', function() {
+                area.classList.remove('dragging');
+            });
+
+            area.addEventListener('drop', function(e) {
+                e.preventDefault();
+                area.classList.remove('dragging');
+                if (e.dataTransfer.files.length > 0) {
+                    uploadBackground(e.dataTransfer.files);
+                }
+            });
+        }
+
+        function setupColorPickers() {
+            document.getElementById('textColor').addEventListener('input', function() {
+                document.getElementById('textColorHex').textContent = this.value;
+            });
+            document.getElementById('translationColor').addEventListener('input', function() {
+                document.getElementById('translationColorHex').textContent = this.value;
+            });
+            document.getElementById('bgColor').addEventListener('input', function() {
+                document.getElementById('bgColorHex').textContent = this.value;
+            });
+        }
+
+        async function loadReciters() {
+            try {
+                var resp = await fetch('/api/reciters');
+                reciters = await resp.json();
+                
+                var select = document.getElementById('reciterSelect');
+                select.innerHTML = '<option value="">-- اختر القارئ --</option>';
+                
+                var seen = new Map();
+                reciters.forEach(function(r) {
+                    if (!seen.has(r.name)) {
+                        seen.set(r.name, r);
+                    } else {
+                        var existing = seen.get(r.name);
+                        var existingBit = parseInt(existing.bitrate) || 0;
+                        var newBit = parseInt(r.bitrate) || 0;
+                        if (newBit > existingBit) {
+                            seen.set(r.name, r);
+                        }
+                    }
+                });
+
+                var uniqueReciters = [...seen.values()].sort(function(a, b) { 
+                    return a.name.localeCompare(b.name, 'ar');
+                });
+
+                uniqueReciters.forEach(function(r) {
+                    var opt = document.createElement('option');
+                    opt.value = r.id;
+                    opt.textContent = r.name + ' (' + r.bitrate + ')';
+                    opt.dataset.subfolder = r.subfolder;
+                    select.appendChild(opt);
+                });
+            } catch (e) {
+                console.error('Failed to load reciters:', e);
+                document.getElementById('reciterSelect').innerHTML = 
+                    '<option value="">❌ فشل تحميل القراء</option>';
+            }
+        }
+
+        async function loadSurahs() {
+            try {
+                var resp = await fetch('/api/surahs');
+                surahs = await resp.json();
+                
+                var select = document.getElementById('surahSelect');
+                select.innerHTML = '<option value="">-- اختر السورة --</option>';
+                
+                surahs.forEach(function(s) {
+                    var opt = document.createElement('option');
+                    opt.value = s.number;
+                    opt.textContent = s.name + ' - ' + s.englishName + ' (' + s.numberOfAyahs + ' آية)';
+                    select.appendChild(opt);
+                });
+            } catch (e) {
+                console.error('Failed to load surahs:', e);
+                document.getElementById('surahSelect').innerHTML =
+                    '<option value="">❌ فشل تحميل السور</option>';
+            }
+        }
+
+async function loadTranslations() {
+    try {
+        var resp = await fetch('/api/translations');
+        var editions = await resp.json();
+
+        var select = document.getElementById('translationSelect');
+        select.innerHTML = '<option value="">بدون ترجمة</option>';
+
+        var currentLang = '';
+        var optgroup = null;
+
+        editions.forEach(function(e) {
+            var langName = e.languageName || e.language || 'Other';
+            if (langName !== currentLang) {
+                if (optgroup) select.appendChild(optgroup);
+                currentLang = langName;
+                optgroup = document.createElement('optgroup');
+                optgroup.label = langName;
+            }
+
+            var opt = document.createElement('option');
+            opt.value = e.identifier;
+            opt.textContent = e.englishName || e.name || e.identifier;
+            if (optgroup) {
+                optgroup.appendChild(opt);
+            } else {
+                select.appendChild(opt);
+            }
+        });
+
+        if (optgroup) select.appendChild(optgroup);
+    } catch (e) {
+        console.error('Failed to load translations:', e);
+        document.getElementById('translationSelect').innerHTML =
+            '<option value="">❌ فشل تحميل الترجمات</option>';
+    }
+}
+
+        document.getElementById('surahSelect').addEventListener('change', function() {
+            var surahNum = parseInt(this.value);
+            if (!surahNum) return;
+            
+            var surah = surahs.find(function(s) { return s.number === surahNum; });
+            if (surah) {
+                document.getElementById('ayahFrom').max = surah.numberOfAyahs;
+                document.getElementById('ayahTo').max = surah.numberOfAyahs;
+                document.getElementById('ayahFrom').value = 1;
+                document.getElementById('ayahTo').value = Math.min(10, surah.numberOfAyahs);
+            }
+        });
+
+        function setRange(type) {
+            var surahNum = parseInt(document.getElementById('surahSelect').value);
+            if (!surahNum) {
+                alert('اختر سورة أولاً');
+                return;
+            }
+            var surah = surahs.find(function(s) { return s.number === surahNum; });
+            if (!surah) return;
+
+            if (type === 'first10') {
+                document.getElementById('ayahFrom').value = 1;
+                document.getElementById('ayahTo').value = Math.min(10, surah.numberOfAyahs);
+            } else if (type === 'all') {
+                document.getElementById('ayahFrom').value = 1;
+                document.getElementById('ayahTo').value = surah.numberOfAyahs;
+            }
+        }
+
+        async function generateVideo() {
+            var reciterSelect = document.getElementById('reciterSelect');
+            var surahSelect = document.getElementById('surahSelect');
+            var ayahFrom = parseInt(document.getElementById('ayahFrom').value);
+            var ayahTo = parseInt(document.getElementById('ayahTo').value);
+
+            if (!reciterSelect.value) {
+                alert('اختر القارئ أولاً');
+                return;
+            }
+            if (!surahSelect.value) {
+                alert('اختر السورة أولاً');
+                return;
+            }
+            if (!ayahFrom || !ayahTo || ayahFrom > ayahTo) {
+                alert('تحقق من نطاق الآيات');
+                return;
+            }
+            if ((ayahTo - ayahFrom + 1) > 20) {
+                alert('الحد الأقصى 20 آية في المرة الواحدة');
+                return;
+            }
+
+            var selectedReciter = reciterSelect.options[reciterSelect.selectedIndex];
+            var surahNum = parseInt(surahSelect.value);
+            var surah = surahs.find(function(s) { return s.number === surahNum; });
+
+            var btn = document.getElementById('generateBtn');
+            var progressContainer = document.getElementById('progressContainer');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> جاري الإنشاء...';
+            progressContainer.classList.add('active');
+            updateProgress(0, 'جاري بدء التوليد...');
+
+            try {
+                var body = {
+                    reciter_id: reciterSelect.value,
+                    reciter_subfolder: selectedReciter.dataset.subfolder,
+                    surah_num: surahNum,
+                    surah_name: surah.englishName,
+                    ayah_from: ayahFrom,
+                    ayah_to: ayahTo,
+                    translation_edition: document.getElementById('translationSelect').value || null,
+                    quran_font: document.getElementById('fontSelect').value || null,
+                    text_color: document.getElementById('textColor').value,
+                    translation_color: document.getElementById('translationColor').value,
+                    bg_color: document.getElementById('bgColor').value,
+                    background_file: selectedBackground || null
+                };
+
+                var resp = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+
+                var data = await resp.json();
+                if (data.error) {
+                    updateProgress(0, data.error, true);
+                    resetBtn();
+                    return;
+                }
+
+                currentJobId = data.job_id;
+                statusInterval = setInterval(function() { pollStatus(currentJobId); }, 1500);
+
+            } catch (e) {
+                updateProgress(0, 'حدث خطأ في الاتصال بالسيرفر', true);
+                resetBtn();
+            }
+        }
+
+        async function pollStatus(jobId) {
+            try {
+                var resp = await fetch('/api/status/' + jobId);
+                var data = await resp.json();
+
+                if (data.status === 'error') {
+                    updateProgress(0, data.message, true);
+                    clearInterval(statusInterval);
+                    resetBtn();
+                } else if (data.status === 'completed') {
+                    updateProgress(100, data.message, false, true);
+                    clearInterval(statusInterval);
+                    resetBtn();
+                    loadOutputs();
+                } else {
+                    updateProgress(data.progress || 0, data.message);
+                }
+            } catch (e) {
+                console.error('Status poll error:', e);
+            }
+        }
+
+        function updateProgress(percent, message, isError, isSuccess) {
+            document.getElementById('progressBar').style.width = percent + '%';
+            var statusEl = document.getElementById('progressStatus');
+            statusEl.textContent = message;
+            statusEl.className = 'progress-status' + 
+                (isError ? ' error' : '') + 
+                (isSuccess ? ' success' : '');
+        }
+
+        function resetBtn() {
+            var btn = document.getElementById('generateBtn');
+            btn.disabled = false;
+            btn.innerHTML = '🎬 إنشاء الفيديو';
+        }
+
+        async function loadOutputs() {
+            try {
+                var resp = await fetch('/api/outputs');
+                var files = await resp.json();
+                var container = document.getElementById('outputsList');
+
+                if (files.length === 0) {
+                    container.innerHTML = '<div class="no-outputs">لا توجد فيديوهات بعد. قم بإنشاء أول فيديو! 🎬</div>';
+                    return;
+                }
+
+                container.innerHTML = files.map(function(f) {
+                    return '<div class="output-item">' +
+                        '<div class="output-info">' +
+                        '<div class="output-name">🎬 ' + escapeHtml(f.filename) + '</div>' +
+                        '<div class="output-meta">' + f.size_mb + ' MB</div>' +
+                        '</div>' +
+                        '<div class="output-actions">' +
+                        '<a href="/api/download/' + escapeHtml(f.filename) + '" class="btn btn-primary btn-small" download>⬇️ تحميل</a>' +
+                        '<button class="btn btn-secondary btn-small" onclick="deleteFile(\'' + escapeHtml(f.filename) + '\')">🗑️</button>' +
+                        '</div></div>';
+                }).join('');
+
+            } catch (e) {
+                console.error('Failed to load outputs:', e);
+            }
+        }
+
+        async function deleteFile(filename) {
+            if (!confirm('هل تريد حذف "' + filename + '"؟')) return;
+            
+            try {
+                await fetch('/api/delete/' + filename, { method: 'DELETE' });
+                loadOutputs();
+            } catch (e) {
+                alert('فشل حذف الملف');
+            }
+        }
+
+        function escapeHtml(str) {
+            var div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        init();
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
+</body>
+</html>

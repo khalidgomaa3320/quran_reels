@@ -1,0 +1,10 @@
+flask>=3.0.0
+flask-cors>=4.0.0
+Pillow>=10.0.0
+requests>=2.31.0
+arabic-reshaper>=3.0.0
+python-bidi>=0.4.2
+uharfbuzz>=0.39.0
+freetype-py>=2.4.0
+numpy>=1.26.0
+nudenet>=3.4.0

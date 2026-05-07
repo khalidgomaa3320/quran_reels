@@ -1,0 +1,16 @@
+# Quran Reels Generator
+
+audio/
+outputs/
+vision/
+tools/ffmpeg/
+__pycache__/
+*.pyc
+*.spec
+build/
+dist/
+surah_cache.json
+reciters_cache.json
+*.bak
+*.old
+.DS_Store
