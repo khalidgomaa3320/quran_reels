@@ -24,3 +24,6 @@ python main.py
 - FFmpeg (يُحمّل تلقائياً)
 
 صنع من قبل خالد جمعه
+
+حتى استطيع تنزيل تحديثات باستمرار:
+buymeacoffee.com/khalidfawzy
